@@ -1,0 +1,33 @@
+name: Daily Amazon Data Update
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # Runs daily at 01:00 UTC
+  workflow_dispatch:     # Allows manual trigger
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install pandas
+
+      - name: Run data generator
+        run: python data_generator.ipynb
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/amazon.csv
+          git commit -m "Automated daily data update"
+          git push
