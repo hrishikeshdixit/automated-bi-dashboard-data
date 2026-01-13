@@ -22,7 +22,7 @@ jobs:
         run: pip install pandas
 
       - name: Run data generator
-        run: python data_generator.ipynb
+        run: python data_generator.py
 
       - name: Commit and push changes
         run: |
