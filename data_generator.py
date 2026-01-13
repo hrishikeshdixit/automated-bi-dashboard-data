@@ -1,0 +1,122 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "38857d4c-dfa6-41ad-8ad2-546367277b8a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "done\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "import random\n",
+    "import os\n",
+    "from datetime import datetime\n",
+    "\n",
+    "file_path = \"C:/Users/Asus/Desktop/UTA/Projects/Amazon Dashboard/data/amazon.csv\"\n",
+    "\n",
+    "# Load existing data\n",
+    "df = pd.read_csv(file_path)\n",
+    "\n",
+    "# Clean column names (important!)\n",
+    "df.columns = df.columns.str.strip()\n",
+    "\n",
+    "# Get last review_id number\n",
+    "df[\"review_id_num\"] = df[\"review_id\"].str.extract(r'(\\d+)').astype(int)\n",
+    "last_review_id = df[\"review_id_num\"].max()\n",
+    "\n",
+    "products = df[\"product_id\"].unique()\n",
+    "\n",
+    "review_titles = [\n",
+    "    \"Great product\", \"Worth the money\", \"Average quality\",\n",
+    "    \"Not satisfied\", \"Excellent!\", \"Would not recommend\"\n",
+    "]\n",
+    "\n",
+    "review_texts = [\n",
+    "    \"The product works as expected.\",\n",
+    "    \"Quality could be better.\",\n",
+    "    \"Exceeded my expectations.\",\n",
+    "    \"Stopped working after a week.\",\n",
+    "    \"Very good value for money.\",\n",
+    "    \"Packaging was damaged but product is fine.\"\n",
+    "]\n",
+    "\n",
+    "num_new = random.randint(10, 20)\n",
+    "new_rows = []\n",
+    "\n",
+    "for i in range(num_new):\n",
+    "    product_id = random.choice(products)\n",
+    "\n",
+    "    new_rows.append({\n",
+    "        \"product_id\": product_id,\n",
+    "        \"product_name\": df[df[\"product_id\"] == product_id][\"product_name\"].iloc[0],\n",
+    "        \"category\": df[df[\"product_id\"] == product_id][\"category\"].iloc[0],\n",
+    "        \"discounted_price\": df[df[\"product_id\"] == product_id][\"discounted_price\"].iloc[0],\n",
+    "        \"actual_price\": df[df[\"product_id\"] == product_id][\"actual_price\"].iloc[0],\n",
+    "        \"discount_percentage\": df[df[\"product_id\"] == product_id][\"discount_percentage\"].iloc[0],\n",
+    "        \"rating\": round(random.uniform(1, 5), 1),\n",
+    "        \"rating_count\": None,  # will recalc later\n",
+    "        \"about_product\": df[df[\"product_id\"] == product_id][\"about_product\"].iloc[0],\n",
+    "        \"user_id\": f\"U{random.randint(10000,99999)}\",\n",
+    "        \"user_name\": f\"user_{random.randint(1000,9999)}\",\n",
+    "        \"review_id\": f\"R{last_review_id + i + 1}\",\n",
+    "        \"review_title\": random.choice(review_titles),\n",
+    "        \"review_content\": random.choice(review_texts),\n",
+    "        \"img_link\": df[df[\"product_id\"] == product_id][\"img_link\"].iloc[0],\n",
+    "        \"product_link\": df[df[\"product_id\"] == product_id][\"product_link\"].iloc[0]\n",
+    "    })\n",
+    "\n",
+    "new_df = pd.DataFrame(new_rows)\n",
+    "\n",
+    "# Append new data\n",
+    "df = pd.concat([df.drop(columns=[\"review_id_num\"]), new_df], ignore_index=True)\n",
+    "\n",
+    "# Recalculate rating count per product\n",
+    "rating_counts = df.groupby(\"product_id\")[\"rating\"].count()\n",
+    "df[\"rating_count\"] = df[\"product_id\"].map(rating_counts)\n",
+    "\n",
+    "# Save back to CSV\n",
+    "df.to_csv(file_path, index=False)\n",
+    "\n",
+    "#print to indicate done\n",
+    "print('done')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "61ec70bf-91cf-449b-9960-6c6eb620d1f9",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:base] *",
+   "language": "python",
+   "name": "conda-base-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
