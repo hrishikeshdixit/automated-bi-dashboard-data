@@ -1,4 +1,4 @@
-name: Daily Amazon Data Update
+name: Daily Amazon Data Update PowerBI Test Code
 
 on:
   schedule:
