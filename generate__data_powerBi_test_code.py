@@ -2,7 +2,7 @@ import pandas as pd
 import random
 import os
 
-FILE_PATH = "data/Test_Data.csv"
+FILE_PATH = "data/Test_Data_1.csv"
 
 def clean_price(value):
     if pd.isna(value):
