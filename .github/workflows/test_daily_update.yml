@@ -22,7 +22,7 @@ jobs:
         run: pip install pandas
 
       - name: Run data generator
-        run: python generate_data_powerBi_test_code.py
+        run: python generate__data_powerBi_test_code.py
 
       - name: Commit and push changes
         run: |
