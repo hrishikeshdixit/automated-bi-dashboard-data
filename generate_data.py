@@ -36,7 +36,9 @@ for i in range(num_new):
     new_rows.append({
         "product_id": product_id,
         "product_name": product_row["product_name"],
-        "category": product_row["category"],
+        "category1": product_row["category1"],
+        "category2": product_row["category2"],
+        "category3": product_row["category3"],
         "discounted_price": product_row["discounted_price"],
         "actual_price": product_row["actual_price"],
         "discount_percentage": product_row["discount_percentage"],
