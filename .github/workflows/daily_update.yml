@@ -2,7 +2,7 @@ name: Daily Amazon Data Update
 
 on:
   schedule:
-    - cron: '0 4 * * *'   # Runs daily at 04:00 UTC (10:00 PM CST)
+    - cron: '30 2 * * *'   # Runs daily at 02:30 UTC (08:30 PM CST)
   workflow_dispatch:     # Allows manual trigger
 
 jobs:
