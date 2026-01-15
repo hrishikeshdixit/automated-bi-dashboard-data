@@ -3,7 +3,7 @@ import random
 import os
 from datetime import datetime
 
-file_path = "/amazon.csv"
+file_path = "amazon.csv"
 
 print("Starting data generator...")
 
