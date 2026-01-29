@@ -1,0 +1,23 @@
+name: Redeploy GitHub Pages After Data Update
+
+on:
+  workflow_run:
+    workflows: ["Daily Amazon Data Update"]
+    types:
+      - completed
+
+jobs:
+  redeploy-pages:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger GitHub Pages rebuild
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createPagesDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              build_type: "workflow"
+            })
